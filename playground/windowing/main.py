@@ -1,14 +1,15 @@
 from pickle import FALSE
 import numpy as np
 import matplotlib.pyplot as plot
+import librosa
 
 # sin
 
-frequency = 30;
+frequency = 3;
 frequency2 = 5;
 w = 2 * np.pi * frequency;
 w2 = 2 * np.pi * frequency2;
-time_interval = 1.8;
+time_interval = 1.2;
 samples= 800;
 time = np.linspace(0, time_interval, samples);
 amplitude = np.sin(w*time);
@@ -54,7 +55,7 @@ def fft(amp):
 def fft2(amp):
   n = int(samples/time_interval)
   freqs = np.fft.fftfreq(n)
-  mask = freqs > 0
+  mask = freqs >= 0
   fft_vals = np.fft.fft(amp)
   fft_theo = 2.0*np.abs(fft_vals/n)
   
@@ -68,9 +69,49 @@ def fft2(amp):
   plot.title("True FFT values")
   plot.show(block=False)
   
+def fft3(amp):
+  freqs = np.fft.fftfreq(samples)
+  mask = freqs >= 0
+  fft = abs(np.fft.fft(amp))[mask]
+  print(freqs.shape)
+  print(amp.shape)
+  print(freqs[0])
+  plot.figure(1)
+  plot.plot(np.linspace(0, freqs.size, freqs.size), freqs)
+  plot.figure(2)
+  plot.plot(np.linspace(0, fft.size, fft.size) / time_interval, fft, "o-")
+  plot.show(block=False)
+  
+  
   
 # fft(amplitude);
 # fft(newAmplitude);
-fft2(amplitude);
-fft2(newAmplitude)
+# fft2(amplitude);
+# fft2(newAmplitude)
+fft3(amplitude);
+fft3(newAmplitude);
+plot.show()
+
+y, sr = librosa.load("C:\\Users\\SCU8BH\\Downloads\\Casio-MT-45-Piano-C4.wav")
+plot.plot(np.linspace(0, y.size/sr, y.size), y)
+plot.show()
+
+time_interval = y.size/sr; # sec
+samples = y.size;
+fft3(y);
+fft3(y * np.hanning(samples))
+plot.show()
+
+coefficient = 0.1/time_interval # brings everything to 0.1 sec
+
+samples = int(y.size * coefficient);
+y = y[:samples];
+time_interval = time_interval * coefficient;
+
+plot.plot(np.linspace(0, samples/sr, samples), y)
+plot.show()
+
+fft3(y)
+fft3(y * np.hanning(samples))
+fft3(y * np.hamming(samples))
 plot.show()
