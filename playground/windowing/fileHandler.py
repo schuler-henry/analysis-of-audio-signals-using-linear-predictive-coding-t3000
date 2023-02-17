@@ -10,6 +10,9 @@ class FileHandler:
     
     print(self.total_time)
     
+  def get_sampling_rate(self):
+    return self.sampling_rate  
+
   def get_frame(self, frame_time, start_frame):
     frame_frames = int(self.sampling_rate * frame_time)
     return self.y[start_frame:(start_frame + frame_frames)], frame_frames
@@ -38,7 +41,7 @@ class FileHandler:
     plt.show()
     return librosa.autocorrelate(frame_y * np.hanning(frame_frames))
     
-  def get_lpc(self, frame_time):
+  def get_lpc(self, frame_time, order):
     frame_y, frame_frames = self.get_frame(frame_time, 3200)
 
-    return librosa.lpc(frame_y * np.hanning(frame_frames), order=20)[1:]
+    return librosa.lpc(frame_y * np.hanning(frame_frames), order=order)
