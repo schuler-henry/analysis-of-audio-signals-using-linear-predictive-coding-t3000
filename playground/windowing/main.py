@@ -9,7 +9,6 @@ from numpy.polynomial import polynomial as P
 from fileHandler import FileHandler 
 
 # sin
-
 def test1():
 
   frequency = 3;
@@ -612,10 +611,95 @@ def test6():
   axs[2].plot(np.linspace(0, samples, samples), cep)
   plt.show()
   
+def test7(src, frame_time, start_time):
+  y, samplingrate = librosa.load(src)
+  start_sample = int(start_time * samplingrate)
+  samples = int(frame_time * samplingrate)
+  end_sample = start_sample + samples
+  f_time = np.linspace(0, 1000*frame_time, samples)
+
+  fig, axs = plt.subplots(20)
+  fig_all, axs_all = plt.subplots(1)
+  
+  max_value = np.zeros(20)
+  sum_value = np.zeros(20)
+  center = np.zeros(20)
+  
+  for i in range(0, 20):
+    print(f"Round: {i}")
+    
+    axs[i].plot(f_time, y[start_sample:end_sample])
+    
+    lpc_values = librosa.lpc(y[start_sample:end_sample], order=12)
+    axs2[i].plot(np.linspace(0, 13, 13), lpc_values, label="test")
+    axs2[i].plot(np.linspace(0, 13, 13), lpc_to_lpcc(lpc_values), label="lpcc")
+    axs_all.plot(np.linspace(0, 13, 13), lpc_values, label=f"Round: {i}")
+    
+    if max_value[i] < np.abs(np.max(lpc_values)):
+      max_value[i] = np.abs(np.max(lpc_values))
+      
+    for j in range(0, 13):
+      sum_value[i] += np.abs(lpc_values[j])
+      center[i] += j * np.abs(lpc_values[j])
+    center[i] = center[i] / sum_value[i]
+    
+    start_sample += samples
+    end_sample+= samples
+    
+  fig_overall, axs_overall = plt.subplots(1)
+  axs_overall.plot(np.linspace(0, 20, 20), max_value, label="max")
+  axs_center.plot(np.linspace(0, 20, 20), center, label=f"center {frame_time}")
+  axs_center.legend()
+  axs_overall.legend()
+  
+  plt.ylim(-1000, 1000)
+
+def plotAudio(src):
+  y, samplingrate = librosa.load(src)
+  
+  plt.plot(np.linspace(0, y.shape[0]/samplingrate, y.shape[0]), y)
+  plt.show()
+  
+def lpc_to_lpcc(lpc):
+  lpcc = np.zeros(lpc.shape)
+  lpcc[0] = lpc[0] 
+  for i in range(2, lpc.shape[0] + 1):
+    lpcc[i-1] = sum((1-k/i)* lpc[k-1] * lpcc[i-k-1] for k in range(1, i)) + lpc[i-1]
+  return lpcc
 # test2()
 # test3()
 # burg_marple(4, [1.0,2.0,3.0, 4.0])
-test6()
+
+# plotAudio("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav")
+# plotAudio("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav")
+
+fig_x, axs_center = plt.subplots(1)
+fig2, axs2 = plt.subplots(20)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.1, 1.44)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.05, 1.44)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.01, 1.44)
+fig_x, axs_center = plt.subplots(1)
+fig2, axs2 = plt.subplots(20)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.1, 0.89)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.05, 0.89)
+test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.01, 0.89)
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0000\\Speaker_0000_00000.wav")
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0000\\Speaker_0000_00001.wav")
+# fig2, axs2 = plt.subplots(20)
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0001\\Speaker_0001_00000.wav")
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0001\\Speaker_0001_00001.wav")
+# fig2, axs2 = plt.subplots(20)
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0002\\Speaker_0002_00000.wav")
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0002\\Speaker_0002_00001.wav")
+# fig2, axs2 = plt.subplots(20)
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0003\\Speaker_0003_00000.wav")
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0003\\Speaker_0003_00001.wav")
+# fig2, axs2 = plt.subplots(20)
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0004\\Speaker_0004_00000.wav")
+# test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0004\\Speaker_0004_00001.wav")
+plt.legend()
+plt.show()
+
 
 # print(librosa.lpc(np.array([13.77, 13.6, 13.11, 12.38, 11.48, 10.45]), order=1))
 # print(librosa.lpc(np.array([13.77, 13.6, 13.11, 12.38, 11.48, 10.45]), order=2))
