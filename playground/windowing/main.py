@@ -619,7 +619,7 @@ def test7(src, frame_time, start_time):
   f_time = np.linspace(0, 1000*frame_time, samples)
 
   fig, axs = plt.subplots(20)
-  fig_all, axs_all = plt.subplots(1)
+  # fig_all, axs_all = plt.subplots(1)
   
   max_value = np.zeros(20)
   sum_value = np.zeros(20)
@@ -630,10 +630,12 @@ def test7(src, frame_time, start_time):
     
     axs[i].plot(f_time, y[start_sample:end_sample])
     
-    lpc_values = librosa.lpc(y[start_sample:end_sample], order=12)
+    lpc_values = librosa.lpc(y[start_sample:end_sample], order=12) # a1 bis a12 sind die lpc werte; a0 ist standardmäßig 1
+    print(lpc_values)
     axs2[i].plot(np.linspace(0, 13, 13), lpc_values, label="test")
-    axs2[i].plot(np.linspace(0, 13, 13), lpc_to_lpcc(lpc_values), label="lpcc")
-    axs_all.plot(np.linspace(0, 13, 13), lpc_values, label=f"Round: {i}")
+    axs3[i].plot(np.linspace(0, 13, 13), lpc_to_lpcc(lpc_values), label="lpcc")
+    # axs4[i].plot(np.linspace(0, 13, 13), lpcc_to_wlpcc(lpc_to_lpcc(lpc_values)), label="wlpcc")
+    # axs_all.plot(np.linspace(0, 13, 13), lpc_values, label=f"Round: {i}")
     
     if max_value[i] < np.abs(np.max(lpc_values)):
       max_value[i] = np.abs(np.max(lpc_values))
@@ -646,11 +648,11 @@ def test7(src, frame_time, start_time):
     start_sample += samples
     end_sample+= samples
     
-  fig_overall, axs_overall = plt.subplots(1)
-  axs_overall.plot(np.linspace(0, 20, 20), max_value, label="max")
-  axs_center.plot(np.linspace(0, 20, 20), center, label=f"center {frame_time}")
-  axs_center.legend()
-  axs_overall.legend()
+  # fig_overall, axs_overall = plt.subplots(1)
+  # axs_overall.plot(np.linspace(0, 20, 20), max_value, label="max")
+  # axs_center.plot(np.linspace(0, 20, 20), center, label=f"center {frame_time}")
+  # axs_center.legend()
+  # axs_overall.legend()
   
   plt.ylim(-1000, 1000)
 
@@ -662,10 +664,27 @@ def plotAudio(src):
   
 def lpc_to_lpcc(lpc):
   lpcc = np.zeros(lpc.shape)
-  lpcc[0] = lpc[0] 
+  lpcc[0] = lpc[0]
   for i in range(2, lpc.shape[0] + 1):
     lpcc[i-1] = sum((1-k/i)* lpc[k-1] * lpcc[i-k-1] for k in range(1, i)) + lpc[i-1]
+  # lpcc[1] = lpc[1] 
+  # for i in range(2, lpc.shape[0]):
+    # lpcc[i] = sum((1-k/i)* lpc[k] * lpcc[i-k] for k in range(1, i)) + lpc[i]
   return lpcc
+
+def lpcc_to_wlpcc(lpcc):
+  Q = lpcc.shape[0] - 1
+  def w(m):
+    return 1 + (Q/2) * np.sin((np.pi * m)/Q)
+  
+  wlpcc = np.zeros(lpcc.shape)
+  
+  for i in range(1, Q + 1):
+    wlpcc[i] = w(i) * lpcc[i]
+    
+  return wlpcc
+    
+  
 # test2()
 # test3()
 # burg_marple(4, [1.0,2.0,3.0, 4.0])
@@ -673,13 +692,17 @@ def lpc_to_lpcc(lpc):
 # plotAudio("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav")
 # plotAudio("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav")
 
-fig_x, axs_center = plt.subplots(1)
+# fig_x, axs_center = plt.subplots(1)
 fig2, axs2 = plt.subplots(20)
+fig3, axs3 = plt.subplots(20)
+fig4, axs4 = plt.subplots(20)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.1, 1.44)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.05, 1.44)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Hallo, das ist ein Test.wav", 0.01, 1.44)
-fig_x, axs_center = plt.subplots(1)
+# fig_x, axs_center = plt.subplots(1)
 fig2, axs2 = plt.subplots(20)
+fig3, axs3 = plt.subplots(20)
+fig4, axs4 = plt.subplots(20)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.1, 0.89)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.05, 0.89)
 test7("C:\\Users\\SCU8BH\\Documents\\T3000\\Account einloggen.wav", 0.01, 0.89)
