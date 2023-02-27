@@ -1,17 +1,32 @@
 \section{Grundlagen}\label{sec:Grundlagen}
+% TODO: Einleitender Text
+
 \subsection{Signalvorverarbeitung}
 Um ein gegebenes Audiosignal einheitlich verarbeiten zu können, muss dieses zunächst mittels verschiedener Verfahren vorbereitet werden.
 Ziel dieser Vorverarbeitung ist es, die Effizienz und Effektivität des anschließenden Verarbeitungsprozess zu erhöhen und somit ein verbessertes Ergebnis zu erzielen \autocite[vgl.][S. 11672]{lokesh_speech_2019}.
-Die Vorverarbeitung im Rahmen dieser Arbeit beschränkt sich auf die beiden Schritte Framing und Windowing, welche in den folgenden Unterkapiteln genauer erläutert werden.
+Die Vorverarbeitung im Rahmen dieser Arbeit beinhaltet die vier Schritte Rauschreduzierung, Pausen entfernen, Framing und Windowing, welche in den folgenden Unterkapiteln genauer erläutert werden.
+
+\subsubsection{Rauschreduzierung}
+Um störende Frequenzen aus dem Audiosignal zu entfernen wird eine Rauschreduzierungsfunktion verwendet.
+Die in dieser Arbeit verwendete Funktion nutzt den sogenannten Spectral Noise Gate Algorithmus.
+Dabei wird zunächst die Signatur des Rauschens ermittelt.
+Basierend darauf kann das Rauschen anschließend verringert werden \autocite[vgl.][S. 25]{kiapuchinski_spectral_2012}.
+
+\subsubsection{Pausen entfernen}
+Die für die Sprecherauthentifizierung relevanten Daten stecken in dem aufgezeichneten Signal der Stimme.
+Sprechpausen innerhalb des Audiosignals enthalten somit keine brauchbaren Informationen, weshalb diese herausgefiltert werden müssen.
+Durch den vorangehenden Schritt der Rauschreduzierung kann hier ein stark vereinfachtes Verfahren gewählt werden.
+Liegt das Signal für einen definierten Zeitraum unterhalb einer definierten Lautstärke, werden die entsprechenden Signalwerte aus dem Gesamtsignal entfernt.
 
 \subsubsection{Framing}
 Das Unterteilen von Audiosignalen in kleinere Blöcke (Frames) wird als Framing bezeichnet.
 Dabei muss zunächst eine einheitliche Blockgröße festgelegt werden.
 Außerdem wird eine Überlagerungszeit definiert, welche eine Überlappung der einzelnen Blöcke verursacht.
+Durch die Überlappung wird ein Zusammenhang zwischen zwei benachbarten Frames und damit auch den anschließend berechneten Koeffizienten hergestellt.
 % TODO: Quelle hinzufügen
 % TODO: Warum wird überlagert -> Quelle
 
-\subsubsection{Windowing (Zeitfenster)}
+\subsubsection{Windowing}
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth, keepaspectratio]{images/hann_window.png}
@@ -21,7 +36,6 @@ Außerdem wird eine Überlagerungszeit definiert, welche eine Überlappung der e
 Um die bei der Unterteilung des Audiosignals entstandenen Diskontinuitäten aufzulösen, wird eine Fensterfunktion auf die einzelnen Blöcke angewendet.
 Abbildung~\ref{fig:vonHannFenster} zeigt die von Hann Fensterfunktion, welche neben dem Hamming Fenster zu den typischen Fensterfunktionen in der Audiosignalverarbeitung zählt.
 Durch den Nulldurchgang am Anfang und Ende der Fensterfunktion werden die Amplituden des Blocksignals nach Anwenden der Funktion an den Grenzen auf Null gezogen, wodurch sich ein kontinuierlicher, periodischer Signalverlauf ergibt.
-Dieser wird von den in dieser Arbeit verwendeten Funktionen wie etwa der \ac{FFT} vorausgesetzt.
 
 Wird der Schritt des Windowing nicht durchgeführt, führt dies zu einem Phänomen namens Spectral leakage.
 Der Amplitudensprung an den Blockenden resultiert in der Registrierung einer vielzahl von Frequenzen, welches die korrekte Ermittlung der sich im Signal befindenden Frequenzen erschwert.
@@ -29,12 +43,8 @@ Wie der Name bereits beschreibt, wird aus einer eindeutigen Frequenz, ein Spektr
 % TODO: Wird Windowing in diesem Anwendungsfall überhaupt benötigt?
 % Warum ist es relevant wenn ich im weiteren Verlauf keine FFT durchführe?
 
-\begin{itemize}
-  \item Spektral leakage
-  \item Hamming und Han Fenster
-  \item Unterschied zu Framing
-\end{itemize}
-\subsection{Autoregression Modell}
+\subsection{Linear Predictive Coding Koeffizientenberechnung}
+\subsubsection{Autoregression Modell}
 Die \ac{AR} basiert auf dem Konzept der multiplen Regression und wird auf zeitlich veränderliche Prozesse angewandt.
 Dabei wird eine Kriteriumsvariable unter Betrachtung von n Prädiktorvariablen vorhergesagt \autocite[vgl.][S. 37-38]{canela_multiple_2019}.
 Im Speziellen Fall der \ac{AR}, handelt es sich bei den Prädiktorvariablen um vorhergehende Werte des Prozesses.
@@ -50,38 +60,37 @@ Neben der Yule-Walker Methode stellt der Burg Algorithmus eine beliebte Alternat
 % Evtl: Formeln des Burg Algorithmus auflisten und erklären
 % Evtl: Was hat Yule-Walker und Levinson damit zu tun?
 
-\subsection{Linear Predictive Coding}
-Es gibt verschiedene Ansätze um aus einem Sprechsignal, Sprecherspezifische Parameter zu extrahieren.
-Bei dem Verfahren \ac{LPC} wird dabei der Ansatz verfolgt, von dem akustischen Signal Rückschlüsse auf die Stimmerzeugung zu schließen.
+\subsubsection{Linear Predictive Coding}
+Wie bereits zu Beginn der Arbeit erwähnt, wird bei dem Verfahren \ac{LPC} der Ansatz verfolgt, Rückschlüsse von dem akustischen Signal auf die Stimmerzeugung zu ziehen.
 Dazu wird ein \ac{AR} Filter verwendet um ein vereinfachtes Modell des menschlichen Stimmtrakts zu erstellen.
-Die Regressionsgewichte entsprechen dabei den \ac{LPC} Koeffizienten
-
+Die Regressionsgewichte $a_k$ entsprechen dabei den \ac{LPC} Koeffizienten.
+\newline
+\newline
 % TODO: Aktuell Wikipedia Formant
 Bei der Stimmerzeugung spielen die sogenannten Formanten eine Rolle.
 Diese beschreiben die akustische Energie in einem unveränderlichen Frequenzbereich, welche wiederum von den Resonanz- und Interferenzeigenschaften des Artikulationsraums abhängen.
 Dadurch werden bestimmte Frequenzen verstärkt, während andere gedämpft werden.
-
 Das durch die \ac{LPC} Koeffizienten erstellte Modell erfasst die Resonanzeigenschaften des Signals, wodurch Rückschlüsse auf die Formanten geschlossen werden können.
 Da die Struktur der Formanten Sprecherspezifisch ist, kann der Sprecher somit über die \ac{LPC} Koeffizienten identifiziert werden \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
 \newline
 \newline
 Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die Annahme getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeuge Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
-Somit lassen sich die Koeffizienten mittels des Burg Algorithmus berechnen.
+Somit lassen sich die Koeffizienten des \ac{AR} Filters mittels des Burg Algorithmus berechnen.
 
 
-\subsection{Cepstral vectors/coefficients}
-% TODO: Was sind Cepstral coefficients
-% TODO: Warum werden sie verwendet, was ist der Vorteil?
-% 1. Woher kommt der Begriff Cepstrum
-% 2. Was ist der Sinn und Zweck des Cepstrums
-% 3. Warum sollte es nach LPC für LPCC verwendet werden
-% 4. Wie sieht die Formel dazu aus?
-Formel~\ref{eq:cepstralcoefficients1} und Formel~\ref{eq:cepstralcoefficients} \autocite[][S. 1305]{atal_effectiveness_1974}.
-\begin{equation}
-  c_{1} = a_{1}
-  \label{eq:cepstralcoefficients1}
-\end{equation}
-\begin{equation}
-  c_n = \sum_{k=1}^{n-1}(1-\frac{k}{n})a_{k}c_{n-k} + a_{n} , 1 < n < p
-  \label{eq:cepstralcoefficients}
-\end{equation}
+% \subsection{Cepstral vectors/coefficients}
+% % TODO: Was sind Cepstral coefficients
+% % TODO: Warum werden sie verwendet, was ist der Vorteil?
+% % 1. Woher kommt der Begriff Cepstrum
+% % 2. Was ist der Sinn und Zweck des Cepstrums
+% % 3. Warum sollte es nach LPC für LPCC verwendet werden
+% % 4. Wie sieht die Formel dazu aus?
+% Formel~\ref{eq:cepstralcoefficients1} und Formel~\ref{eq:cepstralcoefficients} \autocite[][S. 1305]{atal_effectiveness_1974}.
+% \begin{equation}
+%   c_{1} = a_{1}
+%   \label{eq:cepstralcoefficients1}
+% \end{equation}
+% \begin{equation}
+%   c_n = \sum_{k=1}^{n-1}(1-\frac{k}{n})a_{k}c_{n-k} + a_{n} , 1 < n < p
+%   \label{eq:cepstralcoefficients}
+% \end{equation}
