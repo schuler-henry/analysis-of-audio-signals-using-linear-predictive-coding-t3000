@@ -1,1 +1,27 @@
 \section{Einleitung}\label{sec:Einleitung}
+Im Rahmen des Informatikstudiums an der \ac{DHBW} Ravensburg muss im dritten Studienjahr eine Studienarbeit abgelegt werden.
+Die Hochschule stellt dafür eine Auswahl an Themen zur Verfügung.
+Eines dieser Themen beschäftigt sich mit der Problematik der Sprecherauthentifizierung, wobei es Nutzern ermöglicht werden soll, sich über ihre Stimme zu authentifizieren.
+In dieser Arbeit sollen die Grundlagen für die Bearbeitung dieser Studienarbeit behandelt werden.
+
+\subsection{Kontext}
+Damit ein Zusammenhang zwischen Stimme und Audioaufzeichnung hergestellt werden kann, müssen stimm\-spezifische Merkmale aus dem aufgezeichneten Stimmsignal extrahiert werden.
+Im Bereich der Sprecherauthentifizierung haben sich zwei Verfahren zur Berechnung stimm\-spezifischer Merkmale etabliert: \ac{MFCC} und \ac{LPC} \autocite[vgl.][S. 116]{sidorov_text-independent_2010}\autocite[vgl.][S. 726]{chelali_text_2017}.
+Während mittels des \ac{MFCC} Verfahrens versucht wird, die Funktionsweise des menschlichen Ohrs abzubilden, versucht das \ac{LPC} Verfahren die Eigenschaften des menschlichen Vokaltrakts aus dem Audiosignal zu extrahieren \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
+Die erhaltenen Werte können anschließend für das Training eines \acp{NN} verwendet werden, welches die Klassifizierung neuer Datensätze während des Authentifizierungsprozesses übernimmt.
+
+\subsection{Ziel der Arbeit}
+Im Rahmen dieser Arbeit, soll das \ac{LPC} Verfahren genauer untersucht werden.
+Dazu soll ein Programm erstellt werden, welches ein gegebenes Audiosignal mittels \ac{LPC} in eine vordefinierte Anzahl an Koeffizienten umwandelt.
+In einem weiteren Schritt soll der Zusammenhang zwischen den berechneten Koeffizienten und der sprechenden Person unter Verwendung eines vereinfachten \acp{NN} aufgezeigt werden.
+
+\subsection{Vorgehensweise}
+% 2. Grundlagen: Signalvorverarbeitung + LPC berechnung
+% 3. Technische Umsetzung: Applikation
+% 4. Validierung: NN Aufbau + Ergebnis.
+% 5. Kritische Reflexion und Ausblick
+Die Arbeit unterteilt sich in fünf Kapitel.
+Im Anschluss an die Einleitung stellt Kapitel~\ref{sec:Grundlagen} die für diese Arbeit relevanten Grundlagen vor.
+Kapitel~\ref{sec:TechnischeUmsetzung} kombiniert die vorgestellten Verfahren zu einem ausführbaren Programm.
+Die Ergebnisse des erstellten Programms werden in Kapitel~\ref{sec:Validierung} validiert.
+Abschließend werden die Erkenntnisse in Kapitel~\ref{sec:Ausblick} interpretiert und die Arbeit wird mit einem Ausblick abgeschlossen.
