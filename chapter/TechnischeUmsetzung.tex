@@ -1,1 +1,17 @@
 \section{Technische Umsetzung}\label{sec:TechnischeUmsetzung}
+% TODO: Optional: Quellen hinzufügen wenn Platz vorhanden ist.
+Da die Zuordnung der erzeugten \ac{LPC} Koeffizienten zu einem spezifischen Sprecher mittels eines \acp{NN} umgesetzt wird, wird auf die Programmiersprache Python zurückgegriffen.
+Diese ermöglicht die Verwendung des von Google entwickelten Machine Learning Frameworks TensorFlow.
+Folglich findet auch die Implementierung der Signalvorverarbeitung, sowie der \ac{LPC} Berechnung mit Hilfe der Sprache Python statt.
+
+Um Programmierfehler zu vermeiden, sowie die Effizienz des Codes zu erhöhen, werden Funktionen aus verschiedenen Bibliotheken verwendet.
+Als Basis wird die Bibliothek \textKlasse{numpy} verwendet, welche Funktionen für die Bearbeitung von Arrays und Matrizen bereitstellt. 
+
+\subsection{Klasse AudioPreprocessor}
+Die Klasse \textKlasse{AudioPreprocessor} (vgl. Quellcode~\ref{code:AudioPreprocessor}) beinhaltet die Funktionen für die Schritte der Signalvorverarbeitung (vgl. Kapitel~\ref{sec:Signalvorverarbeitung}).
+Die Funktion \textFunktion{remove\_noise} implementiert die Rauschreduzierung unter Verwendung der Bibliothek \textKlasse{noisereduce}.
+Für die Funktion \textFunktion{remove\_silence} wurde wie bereits erwähnt ein eigener Algorithmus entwickelt (vgl. Zeile~\ref{line:removeSilenceStart}-\ref{line:removeSilenceEnd}), der in Kapitel~\ref{sec:Rauschreduzierung} genauer erläutert ist.
+Die Abschließende Unterteilung des Audiosignals in Frames, sowie das Windowing der Frames findet mit Hilfe von \textKlasse{numpy} Operationen in den Funktionen \textFunktion{create\_frames} und \textFunktion{window\_frames} statt.
+Die passende Fensterfunktion wird dabei ebenfalls durch die  \textKlasse{numpy} Bibliothek bereitgestellt (vgl. Zeile~\ref{line:windowFunction}).
+
+\subsection{Klasse FeatureExtractor}
