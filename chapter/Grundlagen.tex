@@ -1,9 +1,10 @@
 \section{Grundlagen}\label{sec:Grundlagen}
-% TODO: Einleitender Text
+Der Schwerpunkt dieser Arbeit unterteilt sich in zwei Teile, die Signalvorverarbeitung und das \ac{LPC} Verfahren.
+Im Folgenden werden die theoretischen Grundlagen für beide Prozesse beschrieben.
 
 \subsection{Signalvorverarbeitung}
 Um ein gegebenes Audiosignal einheitlich verarbeiten zu können, muss dieses zunächst mittels verschiedener Verfahren vorbereitet werden.
-Ziel dieser Vorverarbeitung ist es, die Effizienz und Effektivität des anschließenden Verarbeitungsprozess zu erhöhen und somit ein verbessertes Ergebnis zu erzielen \autocite[vgl.][S. 11672]{lokesh_speech_2019}.
+Ziel dieser Vorverarbeitung ist es, die Effizienz und Effektivität des anschließenden Verarbeitungsprozesses zu erhöhen und somit ein verbessertes Ergebnis zu erzielen \autocite[vgl.][S. 11672]{lokesh_speech_2019}.
 Die Vorverarbeitung im Rahmen dieser Arbeit beinhaltet die vier Schritte Rauschreduzierung, Pausen entfernen, Framing und Windowing, welche in den folgenden Unterkapiteln genauer erläutert werden.
 
 \subsubsection{Rauschreduzierung}
@@ -18,13 +19,13 @@ Sprechpausen innerhalb des Audiosignals enthalten somit keine brauchbaren Inform
 Durch den vorangehenden Schritt der Rauschreduzierung kann hier ein stark vereinfachtes Verfahren gewählt werden.
 Liegt das Signal für einen definierten Zeitraum unterhalb einer definierten Lautstärke, werden die entsprechenden Signalwerte aus dem Gesamtsignal entfernt.
 
-\subsubsection{Framing}
-Das Unterteilen von Audiosignalen in kleinere Blöcke (Frames) wird als Framing bezeichnet.
+\subsubsection{Framing}\label{sec:Framing}
+Für eine detaillierte Analyse des Audiosignals muss dieses in kleinere Blöcke unterteilt werden.
+Dieser Prozess wird als Framing bezeichnet.
 Dabei muss zunächst eine einheitliche Blockgröße festgelegt werden.
-Außerdem wird eine Überlagerungszeit definiert, welche eine Überlappung der einzelnen Blöcke verursacht.
-Durch die Überlappung wird ein Zusammenhang zwischen zwei benachbarten Frames und damit auch den anschließend berechneten Koeffizienten hergestellt.
-% TODO: Quelle hinzufügen
-% TODO: Warum wird überlagert -> Quelle
+Da Stimmsignale aufgrund der Eigenschaften des Vokaltrakts über eine Periode von 10-30 ms stationär sind, wird eine Blockgröße in dieser Zeitordnung verwendet.
+Zusätzlich wird eine Überlagerungszeit definiert, welche eine Überlappung der einzelnen Blöcke verursacht.
+Durch die Überlappung wird ein Zusammenhang zwischen zwei benachbarten Frames und damit auch den anschließend berechneten Koeffizienten hergestellt \autocite[vgl.][S. 457]{richter_signal_2022}.
 
 \subsubsection{Windowing}
 \begin{figure}
@@ -35,15 +36,18 @@ Durch die Überlappung wird ein Zusammenhang zwischen zwei benachbarten Frames u
 \end{figure}
 Um die bei der Unterteilung des Audiosignals entstandenen Diskontinuitäten aufzulösen, wird eine Fensterfunktion auf die einzelnen Blöcke angewendet.
 Abbildung~\ref{fig:vonHannFenster} zeigt die von Hann Fensterfunktion, welche neben dem Hamming Fenster zu den typischen Fensterfunktionen in der Audiosignalverarbeitung zählt.
-Durch den Nulldurchgang am Anfang und Ende der Fensterfunktion werden die Amplituden des Blocksignals nach Anwenden der Funktion an den Grenzen auf Null gezogen, wodurch sich ein kontinuierlicher, periodischer Signalverlauf ergibt.
+Durch den Nulldurchgang am Anfang und Ende der Fensterfunktion werden die Amplituden des Blocksignals nach Anwenden der Funktion an den Grenzen auf Null gezogen, wodurch sich ein kontinuierlicher, periodischer Signalverlauf ergibt \autocite[vgl.][S. 462]{richter_signal_2022}.
 
 Wird der Schritt des Windowing nicht durchgeführt, führt dies zu einem Phänomen namens Spectral leakage.
-Der Amplitudensprung an den Blockenden resultiert in der Registrierung einer vielzahl von Frequenzen, welches die korrekte Ermittlung der sich im Signal befindenden Frequenzen erschwert.
-Wie der Name bereits beschreibt, wird aus einer eindeutigen Frequenz, ein Spektrum aus Frequenzen.
-% TODO: Wird Windowing in diesem Anwendungsfall überhaupt benötigt?
-% Warum ist es relevant wenn ich im weiteren Verlauf keine FFT durchführe?
+Bei der Transformation des Signals von dem Zeitbereich in den Frequenzbereich, resultiert der Amplitudensprung an den Blockenden in der Registrierung einer vielzahl von Frequenzen.
+Wie der Name bereits beschreibt, wird aus einer eindeutigen Frequenz, ein Spektrum aus Frequenzen, die nicht Teil des Signals sind \autocite[vgl.][S. 1296]{wu_new_2012}.
+% TODO: Bessere Quelle finden
 
 \subsection{Linear Predictive Coding Koeffizientenberechnung}
+Ausgehend von dem in Frames unterteilten Audiosignal, müssen nun für jeden Frame \ac{LPC} Koeffizienten berechnet werden, welche anschließend für die Zuordnung des Audiosignals zu einer spezifischen Stimme genutzt werden können.
+Die Grundlage von \ac{LPC} bildet das \ac{AR} Modell, welches zunächst beschrieben wird.
+Anschließend wird der theoretische Zusammenhang zwischen \ac{AR}, \ac{LPC} und der menschlichen Stimme dargestellt.
+
 \subsubsection{Autoregression Modell}
 Die \ac{AR} basiert auf dem Konzept der multiplen Regression und wird auf zeitlich veränderliche Prozesse angewandt.
 Dabei wird eine Kriteriumsvariable unter Betrachtung von n Prädiktorvariablen vorhergesagt \autocite[vgl.][S. 37-38]{canela_multiple_2019}.
@@ -66,31 +70,12 @@ Dazu wird ein \ac{AR} Filter verwendet um ein vereinfachtes Modell des menschlic
 Die Regressionsgewichte $a_k$ entsprechen dabei den \ac{LPC} Koeffizienten.
 \newline
 \newline
-% TODO: Aktuell Wikipedia Formant
 Bei der Stimmerzeugung spielen die sogenannten Formanten eine Rolle.
 Diese beschreiben die akustische Energie in einem unveränderlichen Frequenzbereich, welche wiederum von den Resonanz- und Interferenzeigenschaften des Artikulationsraums abhängen.
-Dadurch werden bestimmte Frequenzen verstärkt, während andere gedämpft werden.
+Dadurch werden bestimmte Frequenzen verstärkt, während andere gedämpft werden \autocite[vgl.][S. 259]{fitch_evolution_2000}.
 Das durch die \ac{LPC} Koeffizienten erstellte Modell erfasst die Resonanzeigenschaften des Signals, wodurch Rückschlüsse auf die Formanten geschlossen werden können.
 Da die Struktur der Formanten Sprecherspezifisch ist, kann der Sprecher somit über die \ac{LPC} Koeffizienten identifiziert werden \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
 \newline
 \newline
-Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die Annahme getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeuge Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
+Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die selbe Annahme wie in Kapitel~\ref{sec:Framing} getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeuge Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
 Somit lassen sich die Koeffizienten des \ac{AR} Filters mittels des Burg Algorithmus berechnen.
-
-
-% \subsection{Cepstral vectors/coefficients}
-% % TODO: Was sind Cepstral coefficients
-% % TODO: Warum werden sie verwendet, was ist der Vorteil?
-% % 1. Woher kommt der Begriff Cepstrum
-% % 2. Was ist der Sinn und Zweck des Cepstrums
-% % 3. Warum sollte es nach LPC für LPCC verwendet werden
-% % 4. Wie sieht die Formel dazu aus?
-% Formel~\ref{eq:cepstralcoefficients1} und Formel~\ref{eq:cepstralcoefficients} \autocite[][S. 1305]{atal_effectiveness_1974}.
-% \begin{equation}
-%   c_{1} = a_{1}
-%   \label{eq:cepstralcoefficients1}
-% \end{equation}
-% \begin{equation}
-%   c_n = \sum_{k=1}^{n-1}(1-\frac{k}{n})a_{k}c_{n-k} + a_{n} , 1 < n < p
-%   \label{eq:cepstralcoefficients}
-% \end{equation}
