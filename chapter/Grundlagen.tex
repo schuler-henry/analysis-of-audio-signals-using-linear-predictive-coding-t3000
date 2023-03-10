@@ -2,12 +2,12 @@
 Der Schwerpunkt dieser Arbeit unterteilt sich in zwei Teile, die Signalvorverarbeitung und das \ac{LPC} Verfahren.
 Im Folgenden werden die theoretischen Grundlagen für beide Prozesse beschrieben.
 
-\subsection{Signalvorverarbeitung}
+\subsection{Signalvorverarbeitung}\label{sec:Signalvorverarbeitung}
 Um ein gegebenes Audiosignal einheitlich verarbeiten zu können, muss dieses zunächst mittels verschiedener Verfahren vorbereitet werden.
 Ziel dieser Vorverarbeitung ist es, die Effizienz und Effektivität des anschließenden Verarbeitungsprozesses zu erhöhen und somit ein verbessertes Ergebnis zu erzielen \autocite[vgl.][S. 11672]{lokesh_speech_2019}.
 Die Vorverarbeitung im Rahmen dieser Arbeit beinhaltet die vier Schritte Rauschreduzierung, Pausen entfernen, Framing und Windowing, welche in den folgenden Unterkapiteln genauer erläutert werden.
 
-\subsubsection{Rauschreduzierung}
+\subsubsection{Rauschreduzierung}\label{sec:Rauschreduzierung}
 Um störende Frequenzen aus dem Audiosignal zu entfernen wird eine Rauschreduzierungsfunktion verwendet.
 Die in dieser Arbeit verwendete Funktion nutzt den sogenannten Spectral Noise Gate Algorithmus.
 Dabei wird zunächst die Signatur des Rauschens ermittelt.

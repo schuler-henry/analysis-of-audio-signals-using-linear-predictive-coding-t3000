@@ -1,4 +1,4 @@
-from utils.utils import Utils
+import librosa
 import numpy as np
 import noisereduce as nr
 
@@ -57,7 +57,14 @@ class AudioPreprocessor:
         return array
 
     @staticmethod
-    def remove_silence(y):
+    def remove_noise(y, sr):
+        # prop_decrease 0.8 only reduces noise by 0.8 -> sound quality is better than at 1.0
+        y_ = nr.reduce_noise(y=y, sr=sr, prop_decrease=0.8)
+
+        return y_
+
+    @staticmethod
+    def remove_silence(y): #(*@\label{line:removeSilenceStart}@*)
         threshold = 0.005
         pause_length_in_ms = 200
         keep_at_start_and_end = 50
@@ -79,14 +86,7 @@ class AudioPreprocessor:
 
         y_ = np.delete(y, indices_to_remove)
 
-        return y_
-
-    @staticmethod
-    def remove_noise(y, sr):
-        # prop_decrease 0.8 only reduces noise by 0.8 -> sound quality is better than at 1.0
-        y_ = nr.reduce_noise(y=y, sr=sr, prop_decrease=0.8)
-
-        return y_
+        return y_ #(*@\label{line:removeSilenceEnd}@*)
 
     @staticmethod
     def create_frames(y, frame_size, overlap):
@@ -104,7 +104,7 @@ class AudioPreprocessor:
         return frames
 
     @staticmethod
-    def window_frames(frames, window_function=np.hanning):
+    def window_frames(frames, window_function=np.hanning): #(*@\label{line:windowFunction}@*)
         windowed_frames = []
 
         for frame in frames:
@@ -118,7 +118,7 @@ class AudioPreprocessor:
             raise ValueError("Either filepath or y and sr must be given.")
         
         if y is None or sr is None:
-            y, sr = Utils.load_file(filepath)
+            y, sr = librosa.load(filepath)
 
         y = AudioPreprocessor.remove_noise(y=y, sr=sr)
         y = AudioPreprocessor.remove_silence(y=y)
