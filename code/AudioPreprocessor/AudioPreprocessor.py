@@ -1,4 +1,4 @@
-from utils.utils import Utils
+import librosa
 import numpy as np
 import noisereduce as nr
 
@@ -118,7 +118,7 @@ class AudioPreprocessor:
             raise ValueError("Either filepath or y and sr must be given.")
         
         if y is None or sr is None:
-            y, sr = Utils.load_file(filepath)
+            y, sr = librosa.load(filepath)
 
         y = AudioPreprocessor.remove_noise(y=y, sr=sr)
         y = AudioPreprocessor.remove_silence(y=y)
