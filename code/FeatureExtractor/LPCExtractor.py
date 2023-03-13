@@ -3,7 +3,7 @@ from FeatureExtractor.ExtractorInterface import ExtractorInterface
 import librosa
 
 class LPCExtractor(ExtractorInterface):
-    def calculateFeatures(self, frames, sr, order):
+    def calculate_features(self, frames, sr, order):
         lpc_coefficients = []
         
         for frame in frames:

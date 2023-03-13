@@ -2,7 +2,7 @@
 % TODO: Optional: Quellen hinzufügen wenn Platz vorhanden ist.
 Da die Zuordnung der erzeugten \ac{LPC} Koeffizienten zu einem spezifischen Sprecher mittels eines \acp{NN} umgesetzt wird, wird auf die Programmiersprache Python zurückgegriffen.
 Diese ermöglicht die Verwendung des von Google entwickelten Machine Learning Frameworks TensorFlow.
-Folglich findet auch die Implementierung der Signalvorverarbeitung, sowie der \ac{LPC} Berechnung mit Hilfe der Sprache Python statt.
+Folglich findet auch die Implementierung der Signalvorverarbeitung, sowie die \ac{LPC} Berechnung mit Hilfe der Sprache Python statt.
 
 Um Programmierfehler zu vermeiden, sowie die Effizienz des Codes zu erhöhen, werden Funktionen aus verschiedenen Bibliotheken verwendet.
 Als Basis wird die Bibliothek \textKlasse{numpy} verwendet, welche Funktionen für die Bearbeitung von Arrays und Matrizen bereitstellt, sowie die Bibliothek \textKlasse{librosa} für Audio spezifische Funktionen wie das Laden von WAV Dateien.
@@ -17,9 +17,9 @@ Die passende Fensterfunktion wird dabei ebenfalls durch die  \textKlasse{numpy} 
 \subsection{Klasse FeatureExtractor}
 Mit Blick auf die an diese Arbeit folgende Studienarbeit wird für die Implementierung der Koeffizientenberechnung ein Ansatz gewählt, der eine einfache Erweiterung des Programms um verschiedene andere Verfahren wie etwa \ac{MFCC} ermöglicht.
 Dazu wird das Design Pattern Strategie in abgewandelter Form verwendet, wobei zunächst ein Interface für die Berechnungsverfahren erstellt werden muss (vgl. Quellcode~\ref{code:ExtractorInterface}).
-Dieses definiert die Funktion \textFunktion{calculateFeatures}, welche in den abgeleiteten Klassen implementiert wird.
+Dieses definiert die Funktion \textFunktion{calculate\_features}, welche in den abgeleiteten Klassen implementiert wird.
 Die Klasse \textKlasse{LPCExtractor} (vgl. Quellcode~\ref{code:LPCExtractor}) nutzt hierfür die von der Bibliothek \textKlasse{librosa} bereitgestellt Funktion \textFunktion{lpc} um für die übergebenen Frames die zugehörigen \ac{LPC} Koeffizienten zu berechnen und anschließend zurückzugeben.
-Der \ac{LPC} Koeffizienten nullter Ordnung wird dabei von der Funktion standardmäßig mit der Zahl eins befüllt und ist kein Teil der berechneten \ac{LPC}-Ordnung, weshalb dieser manuell entfernt werden muss (vgl. Z.~\ref{line:removeLPC0}).
+Der \ac{LPC} Koeffizient nullter Ordnung wird dabei von der Funktion standardmäßig mit der Zahl eins befüllt und ist kein Teil der berechneten \ac{LPC}-Ordnung, weshalb dieser manuell entfernt werden muss (vgl. Z.~\ref{line:removeLPC0}).
 
 Die Klasse \textKlasse{FeatureExtractor} (vgl. Quellcode~\ref{code:FeatureExtractor}) implementiert die Funktion \textFunktion{ex\-tract\-\_features}, welcher über den Parameter \textVariable{feature\_list} eine genaue Anweisung über die zu berechnenden Koeffizienten übergeben werden kann (vgl. Z.~\ref{line:extract_features}).
 Dabei kann im Speziellen eine Angabe zu der Art der Koeffizienten, der Anzahl an zu berechnenden Koeffizienten, sowie der zusätzlich zu berechnenden Ableitungs-Ordnungen übergeben werden (vgl. Z.~\ref{line:feature_list_info}).

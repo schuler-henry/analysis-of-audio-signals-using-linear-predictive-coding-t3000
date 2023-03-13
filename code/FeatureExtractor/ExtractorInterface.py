@@ -1,3 +1,3 @@
 class ExtractorInterface:    
-    def calculateFeatures(self, frames, sr, order):
+    def calculate_features(self, frames, sr, order):
         pass

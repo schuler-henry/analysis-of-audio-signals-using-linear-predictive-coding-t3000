@@ -28,7 +28,7 @@ class FeatureExtractor:
         feature_set = None
         
         for feature_info in feature_list:
-            features = self.extractors[feature_info[0].value].calculateFeatures(self.frames, self.sr, feature_info[1])
+            features = self.extractors[feature_info[0].value].calculate_features(self.frames, self.sr, feature_info[1])
             if feature_set is None:
                 feature_set = np.array(features)
             else:
