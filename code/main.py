@@ -1,34 +1,23 @@
 from AudioPreprocessor.AudioPreprocessor import AudioPreprocessor
 from FeatureExtractor.FeatureExtractor import FeatureExtractor, Feature
+from FeatureEvaluator.FeatureEvaluator import FeatureEvaluator
 
 import librosa
 import numpy as np
 
-def unison_shuffled_copies(a, b):
-    assert len(a) == len(b)
-    p = np.random.permutation(len(a))
-    return a[p], b[p]
-
 def main():
-    filePath = "C:\\Users\\SCU8BH\\Documents\\T3000\\Studienarbeit\\Data\\50_speakers_audio_data\\Speaker_0003\\Speaker_0003_00000.wav"
+    evaluator = FeatureEvaluator("/home/henry/Downloads/archive/50_speakers_audio_data")
+
+    X, y = evaluator.create_dataset([0, 1, 2, 3, 4], [[Feature.LPC, 13, []]], 10, 200, 4410, 2205, np.hanning, start_at_file_index=0)
+    evaluator.set_model_dataset(X, y)
+
+    X, y = evaluator.create_dataset([0, 1, 2, 3, 4], [[Feature.LPC, 13, []]], 10, 200, 4410, 2205, np.hanning, start_at_file_index=12)
+    evaluator.set_evaluation_dataset(X, y)
+
+    evaluator.create_nn_model(epochs=1000)
+
+    evaluator.evaluate_model()
     
-    # Load audio file
-    y, sr = librosa.load(filePath)
-
-    # Preprocess audio file
-    y = AudioPreprocessor.remove_noise(y=y, sr=sr)
-    y = AudioPreprocessor.remove_silence(y=y)
-    # frame-duration: 0.2 s, overlap: 0.1 s
-    frames = AudioPreprocessor.create_frames(y=y, frame_size=int(sr / 5), overlap=int(sr / 10))
-    windowed_frames = AudioPreprocessor.window_frames(frames=frames)
-
-    # Extract features
-    feature_extractor = FeatureExtractor(windowed_frames, sr)
-    # Create LPC features with 13 coefficients per frame and no derivatives
-    extraction_pattern = [
-        [Feature.LPC, 13, []]
-    ]
-    features = feature_extractor.extract_features(extraction_pattern)
     
 if __name__ == "__main__":
     main()
