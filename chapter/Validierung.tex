@@ -2,13 +2,13 @@
 Damit sichergestellt werden kann, dass die in dieser Arbeit erarbeitete Parametrisierung von Stimmaufzeichnungen eine Aussage über die jeweilige sprechende Person ermöglicht, muss der Zusammenhang zwischen den berechneten \ac{LPC} Koeffizienten und der sprechenden Person gezeigt werden.
 Dies erfolgt in der Klasse \textKlasse{FeatureEvaluator} (vgl. Quellcode~\ref{code:FeatureEvaluator}).
 
-Hierfür wird wie bereits eingangs erwähnt ein einfaches \ac{NN} mit Hilfe der Python-Bibliothek \textKlasse{tensorflow} trainiert.
+Hierfür wird wie bereits eingangs erwähnt ein einfaches \ac{NN} mit Hilfe der Bibliothek \textKlasse{tensorflow} trainiert.
 Das \ac{NN} besteht dabei aus einem Input-Layer mit 30 * 12 Features = 360 Neuronen, zwei Hidden-Layern mit je 16 Neuronen, sowie einem Output-Layer (vgl. Z.~\ref{line:NNStart}-\ref{line:NNEnd}).
 Da im Output-Layer für jede Sprecher-ID ein Neuron erstellt wird, passt sich die Anzahl der Neuronen an die höchste verwendete Sprecher-ID an (vgl. Z.~\ref{line:NNOutput}).
 \newline
 \newline
 Als Datengrundlage kommt ein von Vibhor Jain erstellter Datensatz zum Einsatz, welcher auf der Internetseite kaggle.com zur Verfügung steht und Audio-Datensätze zu 50 unterschiedlichen Sprechern bereitstellt \autocite[vgl.][]{vibhor_jain_speaker_2019}.
-Für jeden Sprecher existieren dabei Aufzeichnungen mit einer Dauer von bis zu einer Stunde, welche in einminütige WAV-Dateien heruntergebrochen wurden.
+Für jeden Sprecher existieren dabei Aufzeichnungen mit einer Dauer von bis zu einer Stunde, welche in einminütige WAV Dateien heruntergebrochen wurden.
 Die Dateien mit Index null bis einschließlich 14 jedes Sprechers werden zum Training des \ac{NN} verwendet.
 Alle Dateien ab Index 15 können somit zum Testen des \ac{NN} verwendet werden.
 
@@ -18,14 +18,14 @@ Für die Personen 21 bis 30 werden je 1000 Chunks bestehend aus jeweils 30 aufei
 Da für jeden Frame zwölf Koeffizienten berechnet werden, enthält jeder Chunk somit 360 \ac{LPC} Werte.
 Für eine einfach skalierbare Erstellung des Datensatzes wird die Funktion \textFunktion{create\_dataset} (vgl. Z.~\ref{line:createDatasetStart}-\ref{line:createDatasetEnd}) verwendet, welche neben dem erstellten Datensatz eine weitere Liste, die die Zuordnung des Datensatzes zu der Sprecher-ID enthält, zurückgibt.
 
-Bevor die Trainingsdaten nun für das Training des \ac{NN} verwendet werden, werden diese gemischt, um ein besseres Trainings-Ergebnis zu erzielen (vgl. Z.~\ref{line:shuffle}).
+Bevor die Trainingsdaten nun für das Training des \ac{NN} verwendet werden, werden diese gemischt, um ein besseres Trainingsergebnis zu erzielen (vgl. Z.~\ref{line:shuffle}).
 \newline
 \newline
-Für die Evaluation des trainierten Modells, wird ein Test-Datensatz nach dem selben Verfahren aus den Dateien ab Index 15 für die Personen 21 bis 30 erstellt.
+Für die Evaluation des trainierten Modells, wird ein Testdatensatz nach dem selben Verfahren aus den Dateien ab Index 15 für die Personen 21 bis 30 erstellt.
 Somit wird zunächst sichergestellt, dass es sich bei den Testdaten um unbekannte Werte für das \ac{NN} handelt.
 
 Mit der Funktion \textFunktion{evaluate\_model} (vgl. Z.~\ref{line:evaluateModelStart}-\ref{line:evaluateModelEnd}) kann nun die Genauigkeit, sowie die Fehlerrate des \ac{NN} ermittelt werden.
-Der in dieser Arbeit verwendete Test-Datensatz wurde von dem Modell zu 70,54 Prozent korrekt vorhergesagt, bei einer Fehlerrate von 5,47.
+Der in dieser Arbeit verwendete Testdatensatz wurde von dem Modell zu 70,54 Prozent korrekt vorhergesagt, bei einer Fehlerrate von 5,47.
 Die Fehlerrate berechnet sich dabei nach dem categorical crossentropy Verfahren.
 
 \begin{table}

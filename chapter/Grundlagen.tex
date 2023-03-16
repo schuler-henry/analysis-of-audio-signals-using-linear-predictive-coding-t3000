@@ -51,7 +51,7 @@ Anschließend wird der theoretische Zusammenhang zwischen \ac{AR}, \ac{LPC} und 
 \subsubsection{Autoregression Modell}
 Die \ac{AR} basiert auf dem Konzept der multiplen Regression und wird auf zeitlich veränderliche Prozesse angewandt.
 Dabei wird eine Kriteriumsvariable unter Betrachtung von n Prädiktorvariablen vorhergesagt \autocite[vgl.][S. 37-38]{canela_multiple_2019}.
-Im Speziellen Fall der \ac{AR}, handelt es sich bei den Prädiktorvariablen um vorhergehende Werte des Prozesses.
+Im speziellen Fall der \ac{AR}, handelt es sich bei den Prädiktorvariablen um vorhergehende Werte des Prozesses.
 Ein \ac{AR} Modell sagt somit den Wert zu einem Zeitpunkt $n$, basierend auf $p$ Vorgängerwerten des Prozesses voraus.
 Es gilt somit der in Formel~\ref{eq:autoregression} dargestellte Zusammenhang, wobei $\hat{s}_n$ den vorausgesagten Wert, $s_{n-k}$ die vorhergehenden Werte, $a_{k}$ die Regressionsgewichte und $p$ die Anzahl an verwendeten Vorgängerwerten darstellt \autocite[][S. 1304]{atal_effectiveness_1974}.
 \begin{equation}
@@ -77,5 +77,5 @@ Das durch die \ac{LPC} Koeffizienten erstellte Modell erfasst die Resonanzeigens
 Da die Struktur der Formanten Sprecherspezifisch ist, kann der Sprecher somit über die \ac{LPC} Koeffizienten identifiziert werden \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
 \newline
 \newline
-Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die selbe Annahme wie in Kapitel~\ref{sec:Framing} getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeuge Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
+Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die selbe Annahme wie in Kapitel~\ref{sec:Framing} getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeugte Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
 Somit lassen sich die Koeffizienten des \ac{AR} Filters mittels des Burg Algorithmus berechnen.

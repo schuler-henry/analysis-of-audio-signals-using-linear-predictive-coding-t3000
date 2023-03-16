@@ -5,18 +5,18 @@ Diese ermöglicht die Verwendung des von Google entwickelten Machine Learning Fr
 Folglich findet auch die Implementierung der Signalvorverarbeitung, sowie die \ac{LPC} Berechnung mit Hilfe der Sprache Python statt.
 
 Um Programmierfehler zu vermeiden, sowie die Effizienz des Codes zu erhöhen, werden Funktionen aus verschiedenen Bibliotheken verwendet.
-Als Basis wird die Bibliothek \textKlasse{numpy} verwendet, welche Funktionen für die Bearbeitung von Arrays und Matrizen bereitstellt, sowie die Bibliothek \textKlasse{librosa} für Audio spezifische Funktionen wie das Laden von WAV Dateien.
+Als Basis wird die Bibliothek \textKlasse{numpy} verwendet, welche Funktionen für die Bearbeitung von Arrays und Matrizen bereitstellt, sowie die Bibliothek \textKlasse{librosa} für Audiospezifische Funktionen wie das Laden von WAV Dateien.
 
 \subsection{Klasse AudioPreprocessor}
 Die Klasse \textKlasse{AudioPreprocessor} (vgl. Quellcode~\ref{code:AudioPreprocessor}) beinhaltet die Funktionen für die Schritte der Signalvorverarbeitung (vgl. Kapitel~\ref{sec:Signalvorverarbeitung}).
 Die Funktion \textFunktion{remove\_noise} implementiert die Rauschreduzierung unter Verwendung der Bibliothek \textKlasse{noisereduce}.
 Für die Funktion \textFunktion{remove\_silence} wurde wie bereits erwähnt ein eigener Algorithmus entwickelt (vgl. Zeile~\ref{line:removeSilenceStart}-\ref{line:removeSilenceEnd}), der in Kapitel~\ref{sec:Rauschreduzierung} genauer erläutert ist.
-Die Abschließende Unterteilung des Audiosignals in Frames, sowie das Windowing der Frames findet mit Hilfe von \textKlasse{numpy} Operationen in den Funktionen \textFunktion{create\_frames} und \textFunktion{window\_frames} statt.
+Die abschließende Unterteilung des Audiosignals in Frames, sowie das Windowing der Frames findet mit Hilfe von \textKlasse{numpy} Operationen in den Funktionen \textFunktion{create\_frames} und \textFunktion{window\_frames} statt.
 Die passende Fensterfunktion wird dabei ebenfalls durch die  \textKlasse{numpy} Bibliothek bereitgestellt (vgl. Zeile~\ref{line:windowFunction}).
 
 \subsection{Klasse FeatureExtractor}
 Mit Blick auf die an diese Arbeit folgende Studienarbeit wird für die Implementierung der Koeffizientenberechnung ein Ansatz gewählt, der eine einfache Erweiterung des Programms um verschiedene andere Verfahren wie etwa \ac{MFCC} ermöglicht.
-Dazu wird das Design Pattern Strategie in abgewandelter Form verwendet, wobei zunächst ein Interface für die Berechnungsverfahren erstellt werden muss (vgl. Quellcode~\ref{code:ExtractorInterface}).
+Dazu wird das Designmuster Strategie in abgewandelter Form verwendet, wobei zunächst ein Interface für die Berechnungsverfahren erstellt werden muss (vgl. Quellcode~\ref{code:ExtractorInterface}).
 Dieses definiert die Funktion \textFunktion{calculate\_features}, welche in den abgeleiteten Klassen implementiert wird.
 Die Klasse \textKlasse{LPCExtractor} (vgl. Quellcode~\ref{code:LPCExtractor}) nutzt hierfür die von der Bibliothek \textKlasse{librosa} bereitgestellt Funktion \textFunktion{lpc} um für die übergebenen Frames die zugehörigen \ac{LPC} Koeffizienten zu berechnen und anschließend zurückzugeben.
 Der \ac{LPC} Koeffizient nullter Ordnung wird dabei von der Funktion standardmäßig mit der Zahl eins befüllt und ist kein Teil der berechneten \ac{LPC}-Ordnung, weshalb dieser manuell entfernt werden muss (vgl. Z.~\ref{line:removeLPC0}).
