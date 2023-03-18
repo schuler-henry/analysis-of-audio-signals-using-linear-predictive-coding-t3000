@@ -1,10 +1,25 @@
 # Analysis of Audio Signals Using Linear Predictive Coding
 This study deals with audio signal feature extraction in order to be used for speaker authentication using a neuronal network.
 Specifically, the effectiveness of linear predictive coding (LPC) coefficients is examined.
-The goal of this study is to explain how linear predictive coefficients can be extracted and to evaluate whether they can be used to differentiate between multiple speakers.
+The goal of this study is to explain how LPC coefficients can be extracted and to evaluate whether they can be used to differentiate between multiple speakers.
+Therefore, the developed audio preprocessing (noise and silence removal, framing and windowing) and LPC extraction method is applied to samples of 10 speakers from the [data set](https://www.kaggle.com/datasets/vjcalling/speaker-recognition-audio-dataset?resource=download).
+A simple neural network is then trained and tested with the extracted features.
+
+## Results
+The evaluation of the data set using the neural network resulted in a prediction accuracy of **70.54 percent**, showing a loss of 5.47.
+Thus the effectiveness of LPC for speaker authentication is proven.
+
+## Subsequent studies
+### User authentication using voice recognition
+[![](https://img.shields.io/badge/github-sa--hs--lb--jb-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DHBW-FN-TIT20/sa-hs-lb-jb)</br>
+The results of this study form the basis for the subsequent student research project.
+Within the project, LPC is combined with other speaker related audio features like mel frequency cepstral coefficients to create a neuronal network structure that is capable of authenticating speakers.
+The main goal of the student research project is to improve the systems accuracy by variating the calculated coefficients as well as the structure of the neural network.
 
 ## Author
-* [Henry Schuler](https://henryschuler.de) / [github](https://github.com/schuler-henry) / [E-Mail](mailto:contact@henryschuler.de?subject=[GitHub]%20dhbw-latex-template)
+### Henry Schuler
+[![](https://img.shields.io/badge/github-schuler--henry-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/schuler-henry)
+[![](https://img.shields.io/badge/E--Mail-contact@henryschuler.de-%23121011.svg?style=for-the-badge)](mailto:contact@henryschuler.de?subject=[GitHub]%20analysis-of-audio-signals-using-linear-predictive-coding)
 
 ## [LICENSE](LICENSE)
 Copyright (c) 2022 Henry Schuler
