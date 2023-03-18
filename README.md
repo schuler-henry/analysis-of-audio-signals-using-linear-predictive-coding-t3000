@@ -9,8 +9,8 @@ A simple neural network is then trained and tested with the extracted features.
 The evaluation of the data set using the neural network resulted in a prediction accuracy of **70.54 percent**, showing a loss of 5.47.
 Thus the effectiveness of LPC for speaker authentication is proven.
 
-## Subsequent studies
-### User authentication using voice recognition
+## Subsequent Studies
+### User Authentication Using Voice Recognition
 [![](https://img.shields.io/badge/github-sa--hs--lb--jb-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DHBW-FN-TIT20/sa-hs-lb-jb)</br>
 The results of this study form the basis for the subsequent student research project.
 Within the project, LPC is combined with other speaker related audio features like mel frequency cepstral coefficients to create a neuronal network structure that is capable of authenticating speakers.
