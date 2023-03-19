@@ -1,6 +1,6 @@
 \section{Kritische Reflexion und Ausblick}\label{sec:Ausblick}
-In dieser Arbeit wurde ein lineares Verfahren entwickelt, welches Audiodateien zunächst in vier sequenziellen Schritten vorverarbeitet und anschließend in \ac{LPC} Koeffizienten umrechnet.
-Der theoretische Ansatz hinter der \ac{LPC} Berechnung zeigt dabei bereits ein hohes Potenzial der Koeffizienten für die Verwendung im Kontext Sprecherauthentifizierung.
+In dieser Arbeit wurde ein lineares Verfahren entwickelt, welches Audiodateien zunächst in vier sequenziellen Schritten vorverarbeitet und anschließend in \ac{LPC}-Koeffizienten umrechnet.
+Der theoretische Ansatz hinter der \ac{LPC}-Berechnung zeigt dabei bereits ein hohes Potenzial der Koeffizienten für die Verwendung im Kontext Sprecherauthentifizierung.
 
 Im Rahmen der Implementierung der vorgestellten Verfahren wird auf einen modularen Ansatz gesetzt, der eine Erweiterung des entwickelten Programms um verschiedene Verfahren der Koeffizientenberechnung ermöglicht, wodurch dieses als Basis für die anschließende Studienarbeit verwendet werden kann.
 Gleichzeitig können relevante Größen wie die Länge der zu erstellenden Frames oder die Anzahl zu berechnender Koeffizienten als Parameter den entsprechenden Funktionen übergeben werden, wodurch eine hohe Flexibilität erreicht wird.
@@ -11,16 +11,16 @@ Es besteht somit ein klarer Zusammenhang zwischen den berechneten Koeffizienten 
 Dabei kann mit Blick auf die begrenzten Testdaten festgestellt werden, dass der korrekte Sprecher im Durchschnitt 4,7 Mal so oft gegenüber dem Sprecher mit den zweitmeisten Vorhersagen zugeordnet wird, was die Effektivität der Koeffizienten noch einmal verstärkt hervorhebt.
 \newline
 \newline
-Im Kontext der anschließenden Studienarbeit zeigen die Ergebnisse, dass die \ac{LPC} Koeffizienten gewinnbringend für die Authentifizierung von Sprechern sind.
+Im Kontext der anschließenden Studienarbeit zeigen die Ergebnisse, dass die \ac{LPC}-Koeffizienten gewinnbringend für die Authentifizierung von Sprechern sind.
 Diese Arbeit bietet somit die Grundlage für verschiedene Ansätze, die im Rahmen der Studienarbeit aufgefasst und vertieft werden können.
 
 Durch Anpassungen der Koeffizienten-Zusammensetzung kann untersucht werden, ob die Genauigkeit des \ac{NN} verbessert werden kann.
 Dies bezieht sich insbesondere auf die Faktoren Vorhersagegenauigkeit und Fehlerrate des \ac{NN}.
 
 Neben der Koeffizienten-Zusammensetzung kann der Fokus ebenfalls auf den Aufbau des \ac{NN} gelegt werden.
-Das in dieser Arbeit verwendete Netz beschreibt einen standard-Aufbau eines \ac{NN} und ist somit nicht für die Sprecherauthentifizierung optimiert.
+Das in dieser Arbeit verwendete Netz beschreibt einen Standardaufbau eines \ac{NN} und ist somit nicht für die Sprecherauthentifizierung optimiert.
 Es kann untersucht werden, inwiefern eine Veränderung der Schichtgrößen, sowie der allgemeinen Struktur zu einer Verbesserung der Vorhersagegenauigkeit und Fehlerrate führt.
 
 Als dritte Option besteht die Möglichkeit der Erweiterung des entwickelten \ac{LPC} Verfahrens.
-Durch weitere Rechenschritte können \ac{LPC} Koeffizienten in \ac{LPCC} umgerechnet werden.
+Durch weitere Rechenschritte können \ac{LPC}-Koeffizienten in \ac{LPCC} umgerechnet werden.
 Im Rahmen einer Anschlussarbeit kann evaluiert werden, ob die Umrechnung in \ac{LPCC} zu einer Verbesserung der Sprecherauthentifizierung führt.
