@@ -9,7 +9,7 @@ def main():
     X, y = evaluator.create_dataset([0, 1, 2, 3, 4], [[Feature.LPC, 13, []]], 30, 1000, 500, 100, np.hanning, start_at_file_index=0)
     evaluator.set_model_dataset(X, y)
 
-    X, y = evaluator.create_dataset([0, 1, 2, 3, 4], [[Feature.LPC, 13, []]], 30, 1000, 500, 100, np.hanning, start_at_file_index=12)
+    X, y = evaluator.create_dataset([0, 1, 2, 3, 4], [[Feature.LPC, 13, []]], 30, 1000, 500, 100, np.hanning, start_at_file_index=15)
     evaluator.set_evaluation_dataset(X, y)
 
     evaluator.create_nn_model(epochs=1000)
