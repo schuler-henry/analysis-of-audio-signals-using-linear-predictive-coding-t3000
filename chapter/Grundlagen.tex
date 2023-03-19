@@ -1,5 +1,5 @@
 \section{Grundlagen}\label{sec:Grundlagen}
-Der Schwerpunkt dieser Arbeit unterteilt sich in zwei Teile, die Signalvorverarbeitung und das \ac{LPC} Verfahren.
+Der Schwerpunkt dieser Arbeit unterteilt sich in zwei Teile, die Signalvorverarbeitung und das \ac{LPC}-Verfahren.
 Im Folgenden werden die theoretischen Grundlagen für beide Prozesse beschrieben.
 
 \subsection{Signalvorverarbeitung}\label{sec:Signalvorverarbeitung}
@@ -38,20 +38,20 @@ Um die bei der Unterteilung des Audiosignals entstandenen Diskontinuitäten aufz
 Abbildung~\ref{fig:vonHannFenster} zeigt die von Hann Fensterfunktion, welche neben dem Hamming Fenster zu den typischen Fensterfunktionen in der Audiosignalverarbeitung zählt.
 Durch den Nulldurchgang am Anfang und Ende der Fensterfunktion werden die Amplituden des Blocksignals nach Anwenden der Funktion an den Grenzen auf Null gezogen, wodurch sich ein kontinuierlicher, periodischer Signalverlauf ergibt \autocite[vgl.][S. 462]{richter_signal_2022}.
 
-Wird der Schritt des Windowing nicht durchgeführt, führt dies zu einem Phänomen namens Spectral leakage.
-Bei der Transformation des Signals von dem Zeitbereich in den Frequenzbereich, resultiert der Amplitudensprung an den Blockenden in der Registrierung einer vielzahl von Frequenzen.
+Wird der Schritt des Windowing nicht durchgeführt, führt dies zu einem Phänomen namens spectral leakage.
+Bei der Transformation des Signals von dem Zeitbereich in den Frequenzbereich resultiert der Amplitudensprung an den Blockenden in der Registrierung einer Vielzahl von Frequenzen.
 Wie der Name bereits beschreibt, wird aus einer eindeutigen Frequenz, ein Spektrum aus Frequenzen, die nicht Teil des Signals sind \autocite[vgl.][S. 1296]{wu_new_2012}.
 % TODO: Bessere Quelle finden
 
 \subsection{Linear Predictive Coding Koeffizientenberechnung}
-Ausgehend von dem in Frames unterteilten Audiosignal, müssen nun für jeden Frame \ac{LPC} Koeffizienten berechnet werden, welche anschließend für die Zuordnung des Audiosignals zu einer spezifischen Stimme genutzt werden können.
+Ausgehend von dem in Frames unterteilten Audiosignal, müssen nun für jeden Frame \ac{LPC}-Koeffizienten berechnet werden, welche anschließend für die Zuordnung des Audiosignals zu einer spezifischen Stimme genutzt werden können.
 Die Grundlage von \ac{LPC} bildet das \ac{AR} Modell, welches zunächst beschrieben wird.
 Anschließend wird der theoretische Zusammenhang zwischen \ac{AR}, \ac{LPC} und der menschlichen Stimme dargestellt.
 
 \subsubsection{Autoregression Modell}
 Die \ac{AR} basiert auf dem Konzept der multiplen Regression und wird auf zeitlich veränderliche Prozesse angewandt.
-Dabei wird eine Kriteriumsvariable unter Betrachtung von n Prädiktorvariablen vorhergesagt \autocite[vgl.][S. 37-38]{canela_multiple_2019}.
-Im Speziellen Fall der \ac{AR}, handelt es sich bei den Prädiktorvariablen um vorhergehende Werte des Prozesses.
+Dabei wird eine Kriteriumsvariable unter Betrachtung von einer beliebigen Anzahl an Prädiktorvariablen vorhergesagt \autocite[vgl.][S. 37-38]{canela_multiple_2019}.
+Im speziellen Fall der \ac{AR} handelt es sich bei den Prädiktorvariablen um vorhergehende Werte des Prozesses.
 Ein \ac{AR} Modell sagt somit den Wert zu einem Zeitpunkt $n$, basierend auf $p$ Vorgängerwerten des Prozesses voraus.
 Es gilt somit der in Formel~\ref{eq:autoregression} dargestellte Zusammenhang, wobei $\hat{s}_n$ den vorausgesagten Wert, $s_{n-k}$ die vorhergehenden Werte, $a_{k}$ die Regressionsgewichte und $p$ die Anzahl an verwendeten Vorgängerwerten darstellt \autocite[][S. 1304]{atal_effectiveness_1974}.
 \begin{equation}
@@ -66,16 +66,16 @@ Neben der Yule-Walker Methode stellt der Burg Algorithmus eine beliebte Alternat
 
 \subsubsection{Linear Predictive Coding}
 Wie bereits zu Beginn der Arbeit erwähnt, wird bei dem Verfahren \ac{LPC} der Ansatz verfolgt, Rückschlüsse von dem akustischen Signal auf die Stimmerzeugung zu ziehen.
-Dazu wird ein \ac{AR} Filter verwendet um ein vereinfachtes Modell des menschlichen Stimmtrakts zu erstellen.
-Die Regressionsgewichte $a_k$ entsprechen dabei den \ac{LPC} Koeffizienten.
+Dazu wird ein \ac{AR}-Filter verwendet um ein vereinfachtes Modell des menschlichen Stimmtrakts zu erstellen.
+Die Regressionsgewichte $a_k$ entsprechen dabei den \ac{LPC}-Koeffizienten.
 \newline
 \newline
 Bei der Stimmerzeugung spielen die sogenannten Formanten eine Rolle.
 Diese beschreiben die akustische Energie in einem unveränderlichen Frequenzbereich, welche wiederum von den Resonanz- und Interferenzeigenschaften des Artikulationsraums abhängen.
 Dadurch werden bestimmte Frequenzen verstärkt, während andere gedämpft werden \autocite[vgl.][S. 259]{fitch_evolution_2000}.
-Das durch die \ac{LPC} Koeffizienten erstellte Modell erfasst die Resonanzeigenschaften des Signals, wodurch Rückschlüsse auf die Formanten geschlossen werden können.
-Da die Struktur der Formanten Sprecherspezifisch ist, kann der Sprecher somit über die \ac{LPC} Koeffizienten identifiziert werden \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
+Das durch die \ac{LPC}-Koeffizienten erstellte Modell erfasst die Resonanzeigenschaften des Signals, wodurch Rückschlüsse auf die Formanten geschlossen werden können.
+Da die Struktur der Formanten sprecherspezifisch ist, kann der Sprecher somit über die \ac{LPC}-Koeffizienten identifiziert werden \autocite[vgl.][S. 117]{sidorov_text-independent_2010}.
 \newline
 \newline
-Zur Berechnung der \ac{LPC} Koeffizienten wird zunächst die selbe Annahme wie in Kapitel~\ref{sec:Framing} getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeuge Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
-Somit lassen sich die Koeffizienten des \ac{AR} Filters mittels des Burg Algorithmus berechnen.
+Zur Berechnung der \ac{LPC}-Koeffizienten wird zunächst die selbe Annahme wie in Kapitel~\ref{sec:Framing} getroffen, dass sich die Form des Vokaltrakts und das in den Stimmritzen erzeugte Signal über den betrachteten Zeitraum nicht verändert \autocite[vgl.][S. 1304]{atal_effectiveness_1974}.
+Somit lassen sich die Koeffizienten des \ac{AR}-Filters mittels des Burg-Algorithmus berechnen.
