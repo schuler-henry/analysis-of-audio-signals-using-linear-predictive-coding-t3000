@@ -78,7 +78,7 @@ class FeatureEvaluator:
             print()
 
             dataset.extend(chunks[:chunks_per_speaker])
-            # create numpy array that has 200 times value 1
+            # create numpy array that has chunks_per_speaker times value speaker_id
             dataset_speaker_ids.extend(np.full((chunks_per_speaker), speaker_id))
 
         print("Dataset created.")

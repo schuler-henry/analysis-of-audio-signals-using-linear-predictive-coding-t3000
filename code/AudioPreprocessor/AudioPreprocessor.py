@@ -127,10 +127,3 @@ class AudioPreprocessor:
         windowed_frames = AudioPreprocessor.window_frames(frames=frames)
 
         return windowed_frames
-
-def main():
-    frames = AudioPreprocessor.load_preprocessed_frames("./audio.wav")
-    print(frames)
-
-if __name__ == '__main__':
-    main()
