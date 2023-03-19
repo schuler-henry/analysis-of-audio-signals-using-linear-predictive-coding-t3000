@@ -16,6 +16,26 @@ The results of this study form the basis for the subsequent student research pro
 Within the project, LPC is combined with other speaker related audio features like mel frequency cepstral coefficients to create a neuronal network structure that is capable of authenticating speakers.
 The main goal of the student research project is to improve the systems accuracy by variating the calculated coefficients as well as the structure of the neural network.
 
+## Code
+The evaluation process is implemented in python.
+The code is located within the [code](code/) directory.
+
+### File structure
+Location | Description
+--- | ---
+[main.py](code/main.py) and [main.ipynb](code/main.ipynb) | Starting point containing the function calls used for the complete evaluation process.
+[DatasetHandler/DatasetHandler.py](code/DatasetHandler/DatasetHandler.py) | Class used for accessing the data set's files.
+[AudioPreprocessor/AudioPreprocessor.py](code/AudioPreprocessor/AudioPreprocessor.py) | Class implementing preprocessors for noise and silence removal, framing and windowing.
+[FeatureExtractor/ExtractorInterface.py](code/FeatureExtractor/ExtractorInterface.py) | Interface for implementing extraction classes.
+[FeatureExtractor/LPCExtractor.py](code/FeatureExtractor/LPCExtractor.py) | Class based on ExtractorInterface implementing the LPC algorithm.
+[FeatureExtractor/FeatureExtractor.py](code/FeatureExtractor/FeatureExtractor.py) | Class implementing general feature extraction using the ExtractorInterface implementations.
+[FeatureEvaluator/FeatureEvaluator.py](code/FeatureEvaluator/FeatureEvaluator.py) | Class implementing methods for generating the data set coefficients as well as creating and evaluating the neuronal network model.
+
+### How to use
+1. Install python and pip
+2. Install the pip libraries: `librosa`, `numpy`, `tensorflow` and `noisereduce`
+3. Execute the [main.py](code/main.py) file or [main.ipynb](code/main.ipynb) jupyter notebook
+
 ## Author
 ### Henry Schuler
 [![](https://img.shields.io/badge/github-schuler--henry-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/schuler-henry)
