@@ -88,8 +88,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: 'gh-pages'
-      - name: Copy main.pdf
-        run: cp main.pdf ./deploy/public/main.pdf
+      - name: Upload artifact
+        run: ls -R
+      - name: Test
+        run: cp main.pdf ./deploy/out/main.pdf
 
   # Deployment job
   deploy:
@@ -105,7 +107,7 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
-          build_dir: deploy
+          build_dir: deploy/out
           fqdn: t3000.henryschuler.de
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
