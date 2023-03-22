@@ -85,11 +85,10 @@ jobs:
         with:
           path: ./deploy/out
       - name: Download build
-        working-directory: ./deploy
         uses: actions/download-artifact@v3
         with:
           name: PDF
-          path: public
+          path: ./deploy/public
 
   # Deployment job
   deploy:
