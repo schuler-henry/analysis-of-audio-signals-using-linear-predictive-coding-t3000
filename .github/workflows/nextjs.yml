@@ -84,11 +84,11 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./deploy/out
-      - name: Download build
-        uses: actions/download-artifact@v3
+      - name: Copy build
+        uses: actions/checkout@v3
         with:
-          name: PDF
-          path: ./deploy/public
+          ref: 'gh-pages'
+        run: cp main.pdf ./deploy/public/main.pdf
 
   # Deployment job
   deploy:
