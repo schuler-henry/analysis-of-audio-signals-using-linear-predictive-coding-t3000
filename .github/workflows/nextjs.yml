@@ -49,7 +49,6 @@ jobs:
             exit 1
           fi
       - name: Setup Node
-        working-directory: ./deploy
         uses: actions/setup-node@v3
         with:
           node-version: "16"
