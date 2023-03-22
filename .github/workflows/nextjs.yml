@@ -106,6 +106,8 @@ jobs:
         with:
           name: PDF
           path: ./
+      - name: Create .nojekyll file
+        run: touch .nojekyll
       - name: View directory
         run: ls -R
       - name: Deploy to GitHub Pages
