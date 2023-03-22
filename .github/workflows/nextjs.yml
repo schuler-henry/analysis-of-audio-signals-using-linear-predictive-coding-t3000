@@ -80,34 +80,45 @@ jobs:
       - name: Static HTML export with Next.js
         working-directory: ./deploy
         run: ${{ steps.detect-package-manager.outputs.runner }} next export
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload nextjs
+        uses: actions/upload-artifact@v3
         with:
+          name: nextjs
           path: ./deploy/out
       - name: Checkout gh-pages
         uses: actions/checkout@v3
         with:
           ref: 'gh-pages'
-      - name: Upload artifact
-        run: ls -R
-      - name: Test
-        run: cp main.pdf ./deploy/out/main.pdf
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: "*.pdf"
 
   # Deployment job
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: View directory
+        run: ls -R
+      - name: Download nextjs
+        uses: actions/download-artifact@v3
+        with:
+          name: nextjs
+          path: ./
+      - name: Download PDF
+        uses: actions/download-artifact@v3
+        with:
+          name: PDF
+          path: ./
       - name: Deploy to GitHub Pages
         id: deployment
         if: success()
         uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
-          build_dir: deploy/out
+          build_dir: ./
           fqdn: t3000.henryschuler.de
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
