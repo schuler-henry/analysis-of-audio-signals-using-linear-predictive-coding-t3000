@@ -107,7 +107,7 @@ jobs:
           name: PDF
           path: ./
       - name: Create .nojekyll file
-        run: touch .nojekyll
+        run: echo _next >> .nojekyll
       - name: View directory
         run: ls -R
       - name: Deploy to GitHub Pages
